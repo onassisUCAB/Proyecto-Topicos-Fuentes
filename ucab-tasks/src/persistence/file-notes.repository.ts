@@ -4,6 +4,12 @@ import { Note } from '../notes/domain/note.entity';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 
+/**
+ * Implementación de NotesRepository, que usa un archivo JSON para guardar las notas.
+ * Maneja la persistencia de notas en el sistema de archivos local.
+ * 
+ * @class FileNotesRepository
+ */
 @Injectable()
 export class FileNotesRepository implements NotesRepository {
   // Ruta donde se guardará el archivo JSON (en la raíz del proyecto)
