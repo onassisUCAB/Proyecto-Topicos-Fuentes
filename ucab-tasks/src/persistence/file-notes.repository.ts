@@ -4,12 +4,26 @@ import { Note } from '../notes/domain/note.entity';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 
+/**
+ * Implementación de NotesRepository, que usa un archivo JSON para guardar las notas.
+ * Maneja la persistencia de notas en el sistema de archivos local.
+ * 
+ * @class FileNotesRepository
+ */
 @Injectable()
 export class FileNotesRepository implements NotesRepository {
   // Ruta donde se guardará el archivo JSON (en la raíz del proyecto)
   private readonly filePath = path.join(process.cwd(), 'notes-data.json');
 
-  // Helper: Cargar notas del archivo
+  /**
+   * Carga todas las notas desde el archivo JSON.
+   * Si el archivo no existe, retorna un array vacío (primera ejecución).
+   * 
+   * @private
+   * @async
+   * @returns {Promise<Note[]>} Array de notas cargadas desde el archivo
+   * @throws {InternalServerErrorException} Cuando ocurre un error de lectura diferente a "archivo no encontrado"
+   */
   private async loadNotes(): Promise<Note[]> {
     try {
       const data = await fs.readFile(this.filePath, 'utf-8');
@@ -23,20 +37,47 @@ export class FileNotesRepository implements NotesRepository {
     }
   }
 
-  // Helper: Guardar notas en el archivo
+  /**
+  * Guarda el array de notas en el archivo JSON.
+  * 
+  * @private
+  * @async
+  * @param {Note[]} notes - Array de notas a guardar
+  * @returns {Promise<void>}
+  */
   private async saveNotes(notes: Note[]): Promise<void> {
     await fs.writeFile(this.filePath, JSON.stringify(notes, null, 2));
   }
 
+  /**
+   * Obtiene todas las notas almacenadas.
+   * 
+   * @async
+   * @returns {Promise<Note[]>} Array con todas las notas
+   */
   async findAll(): Promise<Note[]> {
     return this.loadNotes();
   }
 
+    /**
+   * Busca una nota por su ID.
+   * 
+   * @async
+   * @param {string} id - Identificador único de la nota
+   * @returns {Promise<Note | null>} La nota encontrada o null si no existe
+   */
   async findById(id: string): Promise<Note | null> {
     const notes = await this.loadNotes();
     return notes.find((n) => n.id === id) || null;
   }
 
+  /**
+   * Crea una nueva nota y la guarda en el archivo.
+   * 
+   * @async
+   * @param {Note} note - Objeto nota a crear
+   * @returns {Promise<Note>} La nota creada
+   */
   async create(note: Note): Promise<Note> {
     const notes = await this.loadNotes();
     notes.push(note);
@@ -44,6 +85,16 @@ export class FileNotesRepository implements NotesRepository {
     return note;
   }
 
+  /**
+  * Actualiza una nota existente por su ID.
+  * Actualiza automáticamente la fecha de modificación (updatedAt).
+  * Restaura el prototipo de la clase Note para mantener los métodos.
+  * 
+  * @async
+  * @param {string} id - Identificador único de la nota a actualizar
+  * @param {Partial<Note>} data - Objeto con los campos a actualizar
+  * @returns {Promise<Note | null>} La nota actualizada o null si no se encontró
+  */
   async update(id: string, data: Partial<Note>): Promise<Note | null> {
     const notes = await this.loadNotes();
     const index = notes.findIndex((n) => n.id === id);
@@ -72,6 +123,13 @@ export class FileNotesRepository implements NotesRepository {
     return finalNote;
   }
 
+  /**
+  * Elimina una o varias notas por sus IDs.
+  * 
+  * @async
+  * @param {string[]} ids - Array de identificadores de notas a eliminar
+  * @returns {Promise<boolean>} true si se eliminó al menos una nota, false si no se eliminó ninguna
+  */
   async delete(ids: string[]): Promise<boolean> {
     let notes = await this.loadNotes();
     const initialLength = notes.length;
