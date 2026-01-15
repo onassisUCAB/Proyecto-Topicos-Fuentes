@@ -2,6 +2,32 @@ import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nes
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+/**
+ * Interceptor que excluye el campo 'content' de las notas en respuestas de tipo array.
+ * 
+ * Modificar las respuestas HTTP para remover el campo 'content'
+ * cuando la respuesta contiene un array de notas.
+ * 
+ * @class ExcludeContentInterceptor
+ * @implements {NestInterceptor}
+ * @injectable
+ * @example
+ * // Uso en un controlador
+ * @UseInterceptors(ExcludeContentInterceptor)
+ * @Get()
+ * findAll() {
+ *   return this.notesService.findAll();
+ * }
+ * 
+ * @example
+ * // Uso global en el módulo
+ * providers: [
+ *   {
+ *     provide: APP_INTERCEPTOR,
+ *     useClass: ExcludeContentInterceptor
+ *   }
+ * ]
+ */
 @Injectable()
 export class ExcludeContentInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {

@@ -5,6 +5,14 @@ import { UpdateNoteDto } from './dto/update-note.dto';
 import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { ExcludeContentInterceptor } from '../common/interceptors/exclude-content.interceptor'; // Ajusta la ruta
 
+/**
+ * Controlador REST para la gestión de las notas.
+ * Da endpoints para crear, leer, actualizar y eliminar notas.
+ * Integra la documentación automática de Swagger.
+ * @class NotesController
+ * @ApiTags('Notes') - Agrupa los endpoints bajo "Notes" en Swagger
+ * @Controller('notes') - Define el prefijo de ruta /notes
+*/
 @ApiTags('Notes')
 @Controller('notes')
 export class NotesController {
