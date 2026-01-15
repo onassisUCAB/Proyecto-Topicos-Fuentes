@@ -7,6 +7,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
  * Función para entrar en la aplicación backend de NestJS.
  * Esto incluye las configuraciones como los Data Transfer Objects,
  * el Cross-Origin Resource Sharing (CORS) y la documentación Swagger.
+ * 
+ * @returns void
  */
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
