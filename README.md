@@ -5,6 +5,6 @@
 3. Hacer cd en hasta estar ubicado en la carpeta dist dentro de ucab-tasks, puede copiar y pegar:
 `cd ucab-tasks/dist`
 4. Ejecutar `node main` (con el puerto 3000 libre)
-5. Presionar ctrl+click en el link que aparece en la terminal.
+5. Presionar ctrl+click en el link que aparece en la terminal (en caso de algún fallo correr npm install en la carpeta ucab-tasks y volver al paso 3).
 
 No es necesario ejecutar o instalar nada adicional, en caso de que no funcionen las instrucciones contactar a los desarrolladores.
