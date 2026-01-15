@@ -4,6 +4,8 @@ import { NotesService } from '../src/notes/notes.service';
 import { Note } from '../src/notes/domain/note.entity';
 import type { NotesRepository } from '../src/notes/interfaces/notes-repository.interface';
 
+// Agrega esto al inicio del archivo de pruebas
+
 const mockNotesRepository: NotesRepository = {
   create: jest.fn(),
   findAll: jest.fn(),
