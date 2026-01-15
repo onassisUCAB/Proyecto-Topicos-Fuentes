@@ -16,3 +16,4 @@
 5. Esperar los resultados.
 
 No es necesario ejecutar o instalar nada adicional, en caso de que no funcionen las instrucciones contactar a los desarrolladores.
+En caso de que no funcione las pruebas unitarias debido al Jest, unicamente se debe ejecutar `npm install` en bash.
