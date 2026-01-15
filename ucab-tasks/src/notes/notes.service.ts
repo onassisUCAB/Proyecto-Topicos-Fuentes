@@ -5,6 +5,10 @@ import { Note } from './domain/note.entity';
 import type { NotesRepository } from './interfaces/notes-repository.interface';
 import { v4 as uuidv4 } from 'uuid'; // Librería para IDs únicos
 
+/**
+ * Servicio para la gestión CRUD de las notas.
+ * @class NotesService
+ */
 @Injectable()
 export class NotesService {
   constructor(
@@ -13,6 +17,11 @@ export class NotesService {
     private readonly notesRepository: NotesRepository,
   ) {}
 
+  /**
+   * Crear una nueva nota.
+   * @param createNoteDto Datos de la nota
+   * @returns {Promise<Note>}
+   */
   async create(createNoteDto: CreateNoteDto): Promise<Note> {
     // 1. Generamos un ID único
     const id = uuidv4();
@@ -24,6 +33,12 @@ export class NotesService {
     return this.notesRepository.create(newNote);
   }
 
+  /**
+   * Obtener todas las notas, con opción de ordenamiento.
+   * @param sort ordenar según título o fecha
+   * @param order orden ascendente o descendente
+   * @returns {Promise<Note[]>}
+   */
   async findAll(sort?: 'title' | 'date', order: 'asc' | 'desc' = 'asc'): Promise<Note[]> {
     const notes = await this.notesRepository.findAll();
 
@@ -47,6 +62,12 @@ export class NotesService {
     return notes;
   }
 
+  /**
+   * Buscar una nota por su ID.
+   * @param id id de la nota
+   * @returns {Promise<Note>}
+   * @throws {NotFoundException} Si la nota no existe
+   */
   async findOne(id: string): Promise<Note> {
     const note = await this.notesRepository.findById(id);
     if (!note) {
@@ -55,6 +76,12 @@ export class NotesService {
     return note;
   }
 
+  /**
+   * Modificar una nota existente
+   * @param id de la nota a modificar
+   * @param updateNoteDto Datos a modificar
+   * @returns {Promise<Note>}
+   */
   async update(id: string, updateNoteDto: UpdateNoteDto): Promise<Note> {
     // Verificamos que exista primero
     await this.findOne(id);
@@ -63,6 +90,11 @@ export class NotesService {
     return updatedNote!;
   }
 
+  /**
+   * Eliminar una o varias notas por su ID
+   * @param ids de la/s nota/s a eliminar
+   * @returns 
+   */
   async remove(ids: string | string[]): Promise<boolean> {
     // El requisito dice que puede aceptar "uno o varios identificadores"
     // Convertimos a array si viene un solo string
